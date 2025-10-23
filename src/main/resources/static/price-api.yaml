@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Inditex Price API
+  version: 1.0.0
+  description: >
+    REST API to query applicable prices for a given product of a specific brand
+    at a certain date and time.  
+    Hexagonal architecture, API-First approach, in-memory H2 database.  
+    Versioned under /v1 for backward compatibility.
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /v1/prices:
+    get:
+      tags:
+        - Prices
+      summary: Gets applicable prices for a given brand and product at a specific date.
+      operationId: getApplicablePrices
+      description: |
+        Returns all applicable price rates for a given product and brand at a specific date/time.
+        The list is sorted in descending order of priority, and the first element indicates
+        the price that should be applied.
+      parameters:
+        - name: applicationDate
+          in: query
+          required: true
+          description: Application date (ISO-8601 format)
+          schema:
+            type: string
+            format: date-time
+            example: 2020-06-14T16:00:00
+        - name: productId
+          in: query
+          required: true
+          description: Product identifier
+          schema:
+            type: integer
+            example: 35455
+        - name: brandId
+          in: query
+          required: true
+          description: Brand identifier (e.g. 1 = ZARA)
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: List of applicable prices sorted by priority
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceResponse'
+              examples:
+                multipleResults:
+                  summary: Multiple applicable prices found (the one with higher priority applies)
+                  value:
+                    - productId: 35455
+                      brandId: 1
+                      priceList: 2
+                      startDate: '2020-06-14T15:00:00'
+                      endDate: '2020-06-14T18:30:00'
+                      priority: 1
+                      price: 25.45
+                      currency: EUR
+                      applied: true
+                    - productId: 35455
+                      brandId: 1
+                      priceList: 1
+                      startDate: '2020-06-14T00:00:00'
+                      endDate: '2020-12-31T23:59:59'
+                      priority: 0
+                      price: 35.50
+                      currency: EUR
+                      applied: false
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "Invalid request parameters"
+        '404':
+          description: No prices found for the provided parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "No price found for given parameters"
+
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      required:
+        - productId
+        - brandId
+        - priceList
+        - startDate
+        - endDate
+        - priority
+        - price
+        - currency
+        - applied
+      properties:
+        productId:
+          type: integer
+          example: 35455
+        brandId:
+          type: integer
+          example: 1
+        priceList:
+          type: integer
+          example: 2
+        startDate:
+          type: string
+          format: date-time
+          example: '2020-06-14T15:00:00'
+        endDate:
+          type: string
+          format: date-time
+          example: '2020-06-14T18:30:00'
+        priority:
+          type: integer
+          description: Informative field indicating the relative priority of the rate
+          example: 1
+        price:
+          type: number
+          format: double
+          example: 25.45
+        currency:
+          type: string
+          example: EUR
+        applied:
+          type: boolean
+          description: true if this rate is the one that applies (highest priority)
+          example: true
+
+    ErrorResponse:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: "No price found for given parameters"
