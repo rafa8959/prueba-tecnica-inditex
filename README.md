@@ -1,21 +1,22 @@
 # Inditex Price Service
 
-This project follows an **API-First** and **Hexagonal Architecture** approach for the Inditex Price Service.
+## 🧱 Persistence Layer
 
-## 🧩 Project Structure (Current State)
+The persistence layer implements the data access logic using **Spring Data JPA** and an in-memory **H2 database**.  
+It is responsible for retrieving and mapping price data between the database schema and the domain model.
 
-| Layer | Description | Status |
-|-------|--------------|--------|
-| **API Contract** | Defined in `src/main/resources/static/price-api.yaml` following OpenAPI 3.0.3. | Completed |
-| **Domain Layer** | Contains the core model (`Price`, `Money`, `DateRange`) and business services. | Completed |
-| **Application / Infrastructure** | Adapters for persistence (H2/JPA) and REST controller. | Pending implementation |
+### Components
+- **Entities**: `PriceEntity`, `PriceId` → Represent the `PRICES` table.
+- **Repository adapter**: `PriceRepositoryImpl` → Implements the domain `PriceRepository` port.
+- **JPA Repository**: `SpringDataPriceRepository` → Defines the SQL query for applicable prices.
+- **Mapper**: `PriceEntityMapper` → Converts between JPA entities and domain models.
 
-## 🧪 Testing
+### Database
+- Schema: `/src/main/resources/schema.sql`
+- Seed data: `/src/main/resources/data.sql`
 
-- **Unit tests** cover:
-  - `Money`, `DateRange`, and `Price` domain objects.
-  - `PriceDomainService` domain service.
-
-To run the existing tests:
-```bash
-mvn clean test
+### Tests
+Integration tests validate:
+- Database connectivity and schema loading.
+- Entity mappings and query correctness.
+- Full conversion from persistence to domain (`PriceRepositoryImplIntegrationTest`).

@@ -18,8 +18,8 @@ class PriceTest {
     private final LocalDateTime START = LocalDateTime.of(2020, 6, 14, 0, 0);
     private final LocalDateTime END = LocalDateTime.of(2020, 6, 14, 18, 30);
 
-    private final DateRange VALID_RANGE = new DateRange(START, END);
-    private final Money VALID_MONEY = new Money(BigDecimal.valueOf(35.50), "EUR");
+    private final DateRange VALID_RANGE = DateRange.of(START, END);
+    private final Money VALID_MONEY = Money.of(BigDecimal.valueOf(35.50), "EUR");
 
 
     @Test

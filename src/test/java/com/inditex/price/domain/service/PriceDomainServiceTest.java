@@ -31,9 +31,9 @@ class PriceDomainServiceTest {
                 .brandId(1L)
                 .productId(35455L)
                 .priceList(priceList)
-                .dateRange(new DateRange(START, END))
+                .dateRange(DateRange.of(START, END))
                 .priority(priority)
-                .money(new Money(BigDecimal.valueOf(amount), "EUR"))
+                .money(Money.of(BigDecimal.valueOf(amount), "EUR"))
                 .build();
     }
 
