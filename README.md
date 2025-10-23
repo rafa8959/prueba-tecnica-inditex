@@ -1,22 +1,13 @@
 # Inditex Price Service
 
-## 🧱 Persistence Layer
+## Application Layer
 
-The persistence layer implements the data access logic using **Spring Data JPA** and an in-memory **H2 database**.  
-It is responsible for retrieving and mapping price data between the database schema and the domain model.
+Implements the use case logic of the Inditex Price Service.
 
 ### Components
-- **Entities**: `PriceEntity`, `PriceId` → Represent the `PRICES` table.
-- **Repository adapter**: `PriceRepositoryImpl` → Implements the domain `PriceRepository` port.
-- **JPA Repository**: `SpringDataPriceRepository` → Defines the SQL query for applicable prices.
-- **Mapper**: `PriceEntityMapper` → Converts between JPA entities and domain models.
+- `GetApplicablePricesUseCase`: orchestrates repository and domain logic.
 
-### Database
-- Schema: `/src/main/resources/schema.sql`
-- Seed data: `/src/main/resources/data.sql`
-
-### Tests
-Integration tests validate:
-- Database connectivity and schema loading.
-- Entity mappings and query correctness.
-- Full conversion from persistence to domain (`PriceRepositoryImplIntegrationTest`).
+### Notes
+- Follows hexagonal architecture principles.
+- Annotated with `@Transactional(readOnly = true)` for consistent transaction boundaries.
+- Tested via unit tests with Mockito.
