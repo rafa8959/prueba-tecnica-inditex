@@ -1,21 +1,21 @@
-# API Contract – Inditex Price Service
+# Inditex Price Service
 
-This project defines the **API contract** (`price-api.yaml`) for the **Inditex Price Service**.
+This project follows an **API-First** and **Hexagonal Architecture** approach for the Inditex Price Service.
 
-## Purpose
-- Apply an **API-first** approach: the contract is defined **before** any implementation.
-- Ensure that future domain, persistence, and test layers are built strictly against this specification.
+## 🧩 Project Structure (Current State)
 
-## OpenAPI Generator – API First Automation
+| Layer | Description | Status |
+|-------|--------------|--------|
+| **API Contract** | Defined in `src/main/resources/static/price-api.yaml` following OpenAPI 3.0.3. | Completed |
+| **Domain Layer** | Contains the core model (`Price`, `Money`, `DateRange`) and business services. | Completed |
+| **Application / Infrastructure** | Adapters for persistence (H2/JPA) and REST controller. | Pending implementation |
 
-This project uses the **[OpenAPI Generator Maven Plugin](https://openapi-generator.tech/)**  
-to automatically generate Java interfaces and models from the OpenAPI contract.
+## 🧪 Testing
 
-### Location
-- Contract file: `src/main/resources/static/price-api.yaml`
-- Generated sources: `target/generated-sources/openapi/`
+- **Unit tests** cover:
+  - `Money`, `DateRange`, and `Price` domain objects.
+  - `PriceDomainService` domain service.
 
-### How to generate classes
-Run:
+To run the existing tests:
 ```bash
-mvn clean compile
+mvn clean test
