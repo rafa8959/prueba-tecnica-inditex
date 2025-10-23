@@ -9,13 +9,17 @@ public class DateRange {
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
 
-    public DateRange(LocalDateTime startDate, LocalDateTime endDate) {
+    private DateRange(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null)
             throw new InvalidDateRangeException("Start and end dates must not be null");
         if (endDate.isBefore(startDate))
             throw new InvalidDateRangeException("End date must be after start date");
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+    
+    public static DateRange of(LocalDateTime startDate, LocalDateTime endDate) {
+        return new DateRange(startDate, endDate);
     }
 
     public boolean includes(LocalDateTime date) {

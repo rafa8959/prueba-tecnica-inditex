@@ -9,7 +9,7 @@ public class Money {
     private final BigDecimal amount;
     private final String currency;
 
-    public Money(BigDecimal amount, String currency) {
+    private Money(BigDecimal amount, String currency) {
         if (amount == null || currency == null) {
             throw new InvalidMoneyAmountException("Amount and currency must not be null");
         }
@@ -19,6 +19,10 @@ public class Money {
         this.amount = amount;
         this.currency = currency;
     }
+    
+	public static Money of(BigDecimal price, String currency) {
+		return new Money(price, currency);
+	}
 
     public BigDecimal getAmount() {
         return amount;
@@ -53,4 +57,5 @@ public class Money {
     public String toString() {
         return amount + " " + currency;
     }
+
 }

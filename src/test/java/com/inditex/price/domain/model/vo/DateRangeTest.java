@@ -16,7 +16,7 @@ class DateRangeTest {
     @Test
     @DisplayName("Should create a valid DateRange when start <= end")
     void shouldCreateValidDateRange() {
-        DateRange range = new DateRange(START, END);
+        DateRange range = DateRange.of(START, END);
 
         assertEquals(START, range.getStartDate());
         assertEquals(END, range.getEndDate());
@@ -27,7 +27,7 @@ class DateRangeTest {
     void shouldThrowWhenStartDateIsNull() {
         InvalidDateRangeException ex = assertThrows(
                 InvalidDateRangeException.class,
-                () -> new DateRange(null, END)
+                () -> DateRange.of(null, END)
         );
 
         assertEquals("Start and end dates must not be null", ex.getMessage());
@@ -38,7 +38,7 @@ class DateRangeTest {
     void shouldThrowWhenEndDateIsNull() {
         InvalidDateRangeException ex = assertThrows(
                 InvalidDateRangeException.class,
-                () -> new DateRange(START, null)
+                () -> DateRange.of(START, null)
         );
 
         assertEquals("Start and end dates must not be null", ex.getMessage());
@@ -51,7 +51,7 @@ class DateRangeTest {
 
         InvalidDateRangeException ex = assertThrows(
                 InvalidDateRangeException.class,
-                () -> new DateRange(START, before)
+                () -> DateRange.of(START, before)
         );
 
         assertEquals("End date must be after start date", ex.getMessage());
@@ -60,7 +60,7 @@ class DateRangeTest {
     @Test
     @DisplayName("Should include dates exactly at the start and end boundaries")
     void shouldIncludeBoundaryDates() {
-        DateRange range = new DateRange(START, END);
+        DateRange range = DateRange.of(START, END);
 
         assertTrue(range.includes(START));
         assertTrue(range.includes(END));
@@ -69,7 +69,7 @@ class DateRangeTest {
     @Test
     @DisplayName("Should include dates between start and end")
     void shouldIncludeDatesWithinRange() {
-        DateRange range = new DateRange(START, END);
+        DateRange range = DateRange.of(START, END);
 
         LocalDateTime mid = LocalDateTime.of(2020, 6, 14, 10, 0);
         assertTrue(range.includes(mid));
@@ -78,7 +78,7 @@ class DateRangeTest {
     @Test
     @DisplayName("Should not include dates before start or after end")
     void shouldNotIncludeDatesOutsideRange() {
-        DateRange range = new DateRange(START, END);
+        DateRange range = DateRange.of(START, END);
 
         LocalDateTime before = LocalDateTime.of(2020, 6, 13, 23, 59);
         LocalDateTime after = LocalDateTime.of(2020, 6, 14, 19, 0);
@@ -90,8 +90,8 @@ class DateRangeTest {
     @Test
     @DisplayName("Should compare equal DateRange objects correctly")
     void shouldCompareEqualDateRanges() {
-        DateRange r1 = new DateRange(START, END);
-        DateRange r2 = new DateRange(START, END);
+        DateRange r1 = DateRange.of(START, END);
+        DateRange r2 = DateRange.of(START, END);
 
         assertEquals(r1, r2);
         assertEquals(r1.hashCode(), r2.hashCode());
@@ -100,7 +100,7 @@ class DateRangeTest {
     @Test
     @DisplayName("Should print DateRange in human-readable format")
     void shouldPrintToStringProperly() {
-        DateRange range = new DateRange(START, END);
+        DateRange range = DateRange.of(START, END);
 
         assertEquals("[" + START + " - " + END + "]", range.toString());
     }
