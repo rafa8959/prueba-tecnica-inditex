@@ -59,6 +59,18 @@
 		  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 		  <version>2.7.0</version>
 		</dependency>
+		<dependency>
+		  <groupId>org.openapitools</groupId>
+		  <artifactId>jackson-databind-nullable</artifactId>
+		  <version>0.2.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.intuit.karate</groupId>
+		    <artifactId>karate-junit5</artifactId>
+		    <version>1.4.1</version>
+		    <scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -87,6 +99,64 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+			  <groupId>org.openapitools</groupId>
+			  <artifactId>openapi-generator-maven-plugin</artifactId>
+			  <version>7.4.0</version>
+			  <executions>
+			    <execution>
+			      <id>generate-api</id>
+			      <goals>
+			        <goal>generate</goal>
+			      </goals>
+			      <configuration>
+			        <!-- Ruta del contrato OpenAPI -->
+			        <inputSpec>${project.basedir}/src/main/resources/static/price-api.yaml</inputSpec>
+			        
+			        <!-- Generador -->
+			        <generatorName>spring</generatorName>
+			
+			        <!-- Carpeta donde se generan las clases -->
+			        <output>${project.build.directory}/generated-sources/openapi</output>
+			
+			        <!-- Configuración del generador -->
+			        <apiPackage>com.inditex.price.api</apiPackage>
+              		<modelPackage>com.inditex.price.model</modelPackage>
+			        
+			        <configOptions>
+		                <dateLibrary>java8</dateLibrary>
+		                <interfaceOnly>true</interfaceOnly>
+		                <useTags>true</useTags>
+		                <skipDefaultInterface>true</skipDefaultInterface>
+		                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+		                <sourceFolder>src/main/java</sourceFolder>
+		                <library>spring-boot</library>
+		                <useJakartaEe>true</useJakartaEe>
+		                <useOptional>false</useOptional>
+		                <serializableModel>true</serializableModel>
+		              </configOptions>
+			      </configuration>
+			    </execution>
+			  </executions>
+			</plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>build-helper-maven-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>add-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		              <goal>add-source</goal>
+		            </goals>
+		            <configuration>
+		              <sources>
+		                <source>${project.build.directory}/generated-sources/openapi/src/main/java</source>
+		              </sources>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
 		</plugins>
 	</build>
 
