@@ -17,6 +17,9 @@ public class PriceEntity {
 
     @EmbeddedId
     private PriceId id;
+    
+    @Column(name = "START_DATE", nullable = false)
+    private LocalDateTime startDate;
 
     @Column(name = "END_DATE", nullable = false)
     private LocalDateTime endDate;

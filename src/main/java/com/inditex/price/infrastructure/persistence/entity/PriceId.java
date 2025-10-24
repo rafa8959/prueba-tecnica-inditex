@@ -5,7 +5,6 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
@@ -26,6 +25,4 @@ public class PriceId implements Serializable {
     @Column(name = "PRICE_LIST", nullable = false)
     private Integer priceList;
     
-    @Column(name = "START_DATE", nullable = false)
-    private LocalDateTime startDate;
 }
