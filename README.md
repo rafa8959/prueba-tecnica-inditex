@@ -1,47 +1,91 @@
-# Inditex Price Service
+# Inditex Price API
 
-# Infrastructure / REST Layer
+API REST desarrollada en **Java 17 + Spring Boot**, siguiendo principios de **Arquitectura Hexagonal** y un enfoque **API-First** con **OpenAPI 3.0**.  
+Permite consultar las tarifas aplicables de precios para un producto y marca en una fecha concreta.
 
-## Descripción general
-Esta rama implementa la **capa de infraestructura REST** de la arquitectura **hexagonal** del proyecto **Inditex Price API**.  
+## Arquitectura
 
-Su responsabilidad principal es **exponer la API HTTP pública** que permite consultar los precios aplicables para un producto de una marca en una fecha determinada.
+**Capa Dominio:** lógica de negocio pura (entidades, validaciones, value objects).
 
-Toda la lógica de negocio reside en las capas **application** (casos de uso) y **domain**.  
-Esta capa se encarga únicamente de:
+**Capa Aplicación:** orquesta casos de uso.
 
-- Recibir y validar las peticiones HTTP entrantes.  
-- Delegar en el caso de uso correspondiente.  
-- Mapear los modelos de dominio a DTOs (`PriceResponse`).  
-- Gestionar excepciones y devolver respuestas normalizadas.  
+**Capa Infraestructura:** implementa los adaptadores de entrada y salida.
 
+## Tecnologías y Librerías
 
-## Componentes principales
+- Java 17
 
-| Componente | Descripción |
-|-------------|-------------|
-| **`PriceController`** | Controlador REST principal. Implementa la interfaz `PricesApi` generada a partir del contrato OpenAPI. Recibe los parámetros de consulta (`applicationDate`, `productId`, `brandId`) y delega en `GetApplicablePricesUseCase`. |
-| **`PriceRestMapper`** | Mapper que convierte entidades de dominio (`Price`) en modelos de respuesta (`PriceResponse`). Marca el primer precio como `applied=true`. |
-| **`GlobalExceptionHandler`** | Manejador global de excepciones. Intercepta errores del dominio o de validación y devuelve respuestas `ErrorResponse` con códigos HTTP adecuados (`400`, `404`, `500`). |
-| **Tests Karate** | Tests de integración E2E que validan el correcto comportamiento de la API y los distintos escenarios (felices y de error). |
+- Spring Boot 3.5
 
-## Tests de integración (Karate)
+- H2 Database
 
-Los tests de integración se definen en:
-- `src/test/resources/karate/prices.feature`
+- OpenAPI / Swagger 3.0
 
-Ejecutar con:
+- JUnit 5 / Karate
+
+- Docker
+
+## Ejecución Local
 ```bash
-mvn test -Dtest=PriceFeatureRunner
+mvn clean spring-boot:run
+```
+El servicio estará disponible en:
+
+`http://localhost:8080/v1/prices`
+
+Ejemplo de petición:
+
+`GET http://localhost:8080/v1/prices?applicationDate=2020-06-14T16:00:00Z&productId=35455&brandId=1`
+
+## Ejecución con Docker
+```bash
+# Construir la imagen
+mvn clean package -DskipTests
+docker build -t inditex-price-api .
+
+# Ejecutar el contenedor
+docker run -p 8080:8080 inditex-price-api
+```
+Verifica la ejecución en:
+`http://localhost:8080/v1/prices`
+
+## Documentación API
+La aplicación expone documentación interactiva generada automáticamente con **Springdoc OpenAPI.**
+
+Una vez la aplicación esté levantada, puedes acceder al Swagger UI en:
+http://localhost:8080/swagger-ui.html
+
+## Tests
+### Unitarios
+
+Ejecuta los tests unitarios con:
+
+```bash
+mvn test
 ```
 
-## Colección Postman
-También se ha dejado una colección Postman con las mismas peticiones usadas en los tests automáticos.
-Ruta del archivo:
-- `postman/Prices.postman_collection.json`
+### Integración (Karate)
 
-Puedes importarla en Postman y probar los endpoints manualmente.
-Asegúrate de tener levantada la aplicación en http://localhost:8080.
+Los tests de integración se encuentran en:
 
-Ejemplo de endpoint principal:
-GET `http://localhost:8080/api/prices?applicationDate=2020-06-14T10:00:00Z&productId=35455&brandId=1`
+[src/test/resources/karate/prices.feature](src/main/resources/karate/prices.feature)
+
+Puedes ejecutarlos con:
+
+`mvn test -Dtest=PriceFeatureRunner`
+
+Tras la ejecución, se genera un reporte HTML interactivo en:
+
+`target/karate-reports/karate-summary.html`
+
+### Postman
+
+Se ha incluido una colección en:
+
+[/postman/Prices.postman_collection.json](/postman/Prices.postman_collection.json)
+
+Importa esta colección en Postman para probar los endpoints manualmente.
+
+## Autor
+
+**Desarrollado por:** Rafa Edo
