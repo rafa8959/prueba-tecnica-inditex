@@ -18,12 +18,14 @@ class PriceEntityTest {
     @Test
     @DisplayName("Should correctly build PriceEntity using Builder pattern")
     void testBuilder() {
-        PriceId id = new PriceId(1L, 35455L, 1, LocalDateTime.of(2020, 6, 14, 0, 0));
+        PriceId id = new PriceId(1L, 35455L, 1);
+        LocalDateTime startDate = LocalDateTime.of(2020, 6, 14, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2020, 12, 31, 23, 59, 59);
         BigDecimal priceValue = new BigDecimal("35.50");
 
         PriceEntity entity = PriceEntity.builder()
                 .id(id)
+                .startDate(startDate)
                 .endDate(endDate)
                 .priority(0)
                 .price(priceValue)
@@ -42,11 +44,13 @@ class PriceEntityTest {
     void testSettersAndGetters() {
         PriceEntity entity = new PriceEntity();
 
-        PriceId id = new PriceId(1L, 35455L, 4, LocalDateTime.of(2020, 6, 15, 16, 0));
+        PriceId id = new PriceId(1L, 35455L, 4);
+        LocalDateTime startDate = LocalDateTime.of(2020, 6, 15, 16, 0);
         LocalDateTime endDate = LocalDateTime.of(2020, 12, 31, 23, 59, 59);
         BigDecimal price = new BigDecimal("38.95");
 
         entity.setId(id);
+        entity.setStartDate(startDate);
         entity.setEndDate(endDate);
         entity.setPriority(1);
         entity.setPrice(price);
@@ -62,9 +66,10 @@ class PriceEntityTest {
     @Test
     @DisplayName("Should correctly use all-args constructor")
     void testAllArgsConstructor() {
-        PriceId id = new PriceId(1L, 35455L, 2, LocalDateTime.of(2020, 6, 14, 15, 0));
+        PriceId id = new PriceId(1L, 35455L, 2);
+        LocalDateTime startDate = LocalDateTime.of(2020, 6, 14, 15, 0);
         LocalDateTime endDate = LocalDateTime.of(2020, 6, 14, 18, 30);
-        PriceEntity entity = new PriceEntity(id, endDate, 1, new BigDecimal("25.45"), "EUR");
+        PriceEntity entity = new PriceEntity(id, startDate, endDate, 1, new BigDecimal("25.45"), "EUR");
 
         assertEquals(id, entity.getId());
         assertEquals(endDate, entity.getEndDate());

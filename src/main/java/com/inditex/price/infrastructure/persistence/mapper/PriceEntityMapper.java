@@ -18,7 +18,7 @@ public class PriceEntityMapper {
                 .brandId(entity.getId().getBrandId())
                 .productId(entity.getId().getProductId())
                 .priceList(entity.getId().getPriceList())
-                .dateRange(DateRange.of(entity.getId().getStartDate(), entity.getEndDate()))
+                .dateRange(DateRange.of(entity.getStartDate(), entity.getEndDate()))
                 .priority(entity.getPriority())
                 .money(Money.of(entity.getPrice(), entity.getCurrency()))
                 .build();
