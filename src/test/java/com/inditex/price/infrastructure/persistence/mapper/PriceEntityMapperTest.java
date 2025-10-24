@@ -18,9 +18,10 @@ class PriceEntityMapperTest {
     @Test
     @DisplayName("Should correctly map PriceEntity to domain Price")
     void testToDomainMapsAllFieldsCorrectly() {
-        PriceId id = new PriceId(1L, 35455L, 2, LocalDateTime.of(2020, 6, 14, 15, 0));
+        PriceId id = new PriceId(1L, 35455L, 2);
         PriceEntity entity = PriceEntity.builder()
                 .id(id)
+                .startDate(LocalDateTime.of(2020, 6, 14, 15, 0))
                 .endDate(LocalDateTime.of(2020, 6, 14, 18, 30))
                 .priority(1)
                 .price(new BigDecimal("25.45"))
@@ -50,9 +51,10 @@ class PriceEntityMapperTest {
     @Test
     @DisplayName("Should throw exception if PriceEntity has invalid dates or money")
     void testToDomainThrowsWhenInvalid() {
-        PriceId id = new PriceId(1L, 35455L, 1, LocalDateTime.of(2020, 6, 14, 18, 30));
+        PriceId id = new PriceId(1L, 35455L, 1);
         PriceEntity entity = PriceEntity.builder()
                 .id(id)
+                .startDate(LocalDateTime.of(2020, 6, 14, 18, 30))
                 .endDate(LocalDateTime.of(2020, 6, 14, 15, 0))
                 .priority(1)
                 .price(new BigDecimal("10.00"))
@@ -74,9 +76,10 @@ class PriceEntityMapperTest {
 
         assertThrows(IllegalArgumentException.class, () -> PriceEntityMapper.toDomain(entityWithoutId));
 
-        PriceId id = new PriceId(1L, 35455L, 2, LocalDateTime.of(2020, 6, 14, 15, 0));
+        PriceId id = new PriceId(1L, 35455L, 2);
         PriceEntity entityWithNullCurrency = PriceEntity.builder()
                 .id(id)
+                .startDate(LocalDateTime.of(2020, 6, 14, 15, 0))
                 .endDate(LocalDateTime.of(2020, 6, 14, 18, 30))
                 .priority(1)
                 .price(new BigDecimal("25.45"))

@@ -36,7 +36,8 @@ class PriceRepositoryImplTest {
         MockitoAnnotations.openMocks(this);
 
         sampleEntity = PriceEntity.builder()
-                .id(new PriceId(1L, 35455L, 2, LocalDateTime.of(2020, 6, 14, 15, 0)))
+                .id(new PriceId(1L, 35455L, 2))
+                .startDate(LocalDateTime.of(2020, 6, 14, 15, 0))
                 .endDate(LocalDateTime.of(2020, 6, 14, 18, 30))
                 .priority(1)
                 .price(new BigDecimal("25.45"))

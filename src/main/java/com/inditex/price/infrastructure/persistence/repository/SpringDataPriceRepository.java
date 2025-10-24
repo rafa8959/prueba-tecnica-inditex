@@ -16,7 +16,7 @@ public interface SpringDataPriceRepository extends JpaRepository<PriceEntity, Pr
 	@Query("SELECT p FROM PriceEntity p " +
 		       "WHERE p.id.productId = :productId " +
 		       "AND p.id.brandId = :brandId " +
-		       "AND p.id.startDate <= :applicationDate " +
+		       "AND p.startDate <= :applicationDate " +
 		       "AND p.endDate >= :applicationDate")
 	List<PriceEntity> findApplicablePrices(Long productId,
 		                                       Long brandId,
