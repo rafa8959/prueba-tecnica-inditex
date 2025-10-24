@@ -1,17 +1,31 @@
 # Inditex Price API
 
-API REST desarrollada en **Java 17 + Spring Boot**, siguiendo principios de **Arquitectura Hexagonal** y un enfoque **API-First** con **OpenAPI 3.0**.  
-Permite consultar las tarifas aplicables de precios para un producto y marca en una fecha concreta.
+REST API developed in **Java 17 + Spring Boot**, following **Hexagonal Architecture** principles and an **API-First** approach using **OpenAPI 3.0**.  
+It allows querying applicable price rates for a given product, brand, and date.
 
-## Arquitectura
+## API First
 
-**Capa Dominio:** lógica de negocio pura (entidades, validaciones, value objects).
+The API contract is defined in [price-api.yaml](/src/main/resources/static/price-api.yaml)
 
-**Capa Aplicación:** orquesta casos de uso.
+The contract is used to:
 
-**Capa Infraestructura:** implementa los adaptadores de entrada y salida.
+- Automatically generate API interfaces and models.
 
-## Tecnologías y Librerías
+- Ensure consistency between implementation and documentation.
+
+You can visualize or test the API specification through Swagger UI at:
+
+[https://rafaedo.com/swagger-ui/index.html](https://rafaedo.com/swagger-ui/index.html)
+
+## Architecture
+
+**Domain Layer:** pure business logic (entities, validations, value objects).
+
+**Application Layer:** orchestrates use cases.
+
+**Infrastructure Layer:** implements input/output adapters.
+
+## Technologies & Libraries
 
 - Java 17
 
@@ -25,67 +39,67 @@ Permite consultar las tarifas aplicables de precios para un producto y marca en 
 
 - Docker
 
-## Ejecución Local
+## Live Demo
+
+You can access a live demo of the API here:
+
+[https://rafaedo.com/v1/prices](https://rafaedo.com/v1/prices?applicationDate=2020-06-14T10:00:00Z&productId=35455&brandId=1)
+
+Example request:
+
+`GET https://rafaedo.com/v1/prices?applicationDate=2020-06-14T16:00:00Z&productId=35455&brandId=1`
+
+## Local Execution
 ```bash
 mvn clean spring-boot:run
 ```
-El servicio estará disponible en:
+The service will be available at:
 
 `http://localhost:8080/v1/prices`
 
-Ejemplo de petición:
-
-`GET http://localhost:8080/v1/prices?applicationDate=2020-06-14T16:00:00Z&productId=35455&brandId=1`
-
-## Ejecución con Docker
+## Run with Docker
 ```bash
-# Construir la imagen
+# Build the image
 mvn clean package -DskipTests
 docker build -t inditex-price-api .
 
-# Ejecutar el contenedor
+# Run the container
 docker run -p 8080:8080 inditex-price-api
 ```
-Verifica la ejecución en:
+Verify the application at:
 `http://localhost:8080/v1/prices`
 
-## Documentación API
-La aplicación expone documentación interactiva generada automáticamente con **Springdoc OpenAPI.**
-
-Una vez la aplicación esté levantada, puedes acceder al Swagger UI en:
-http://localhost:8080/swagger-ui.html
-
 ## Tests
-### Unitarios
+### Unit Tests
 
-Ejecuta los tests unitarios con:
+Run unit tests with:
 
 ```bash
 mvn test
 ```
 
-### Integración (Karate)
+### Integration Tests (Karate)
 
-Los tests de integración se encuentran en:
+Integration tests are located at:
 
 [src/test/resources/karate/prices.feature](src/main/resources/karate/prices.feature)
 
-Puedes ejecutarlos con:
+You can run them with:
 
 `mvn test -Dtest=PriceFeatureRunner`
 
-Tras la ejecución, se genera un reporte HTML interactivo en:
+After execution, an interactive HTML report is generated at:
 
 `target/karate-reports/karate-summary.html`
 
 ### Postman
 
-Se ha incluido una colección en:
+A Postman collection is included for manual endpoint testing:
 
 [/postman/Prices.postman_collection.json](/postman/Prices.postman_collection.json)
 
-Importa esta colección en Postman para probar los endpoints manualmente.
+Import it into Postman to easily test all endpoints.
 
 ## Autor
 
-**Desarrollado por:** Rafa Edo
+**Developed by:** Rafa Edo

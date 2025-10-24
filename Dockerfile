@@ -1,16 +1,13 @@
-FROM maven:3.9.9-eclipse-temurin-17 AS build
+FROM eclipse-temurin:17-jdk-jammy
 
+# Establecer el directorio de trabajo
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
 
-RUN mvn clean package -DskipTests
+# Copiar el JAR
+COPY target/price-0.0.1-SNAPSHOT.jar .
 
-FROM eclipse-temurin:17-jdk-alpine
-
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-
+# Exponer el puerto
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "/app/price-0.0.1-SNAPSHOT.jar"]
