@@ -1,6 +1,5 @@
 package com.inditex.price.domain.service;
 
-import com.inditex.price.domain.exception.InvalidPriceListException;
 import com.inditex.price.domain.model.Price;
 import com.inditex.price.domain.model.vo.DateRange;
 import com.inditex.price.domain.model.vo.Money;
@@ -34,27 +33,24 @@ class PriceDomainServiceTest {
     }
 
     @Test
-    @DisplayName("Should return list of prices sorted by priority descending")
+    @DisplayName("Should return the product price with the highest priority")
     void shouldReturnPricesSortedByPriority() {
         Price low = createPrice(1, 0, 35.50);
         Price high = createPrice(2, 1, 25.45);
 
         List<Price> result = service.sortApplicablePricesByPriority(Arrays.asList(low, high));
 
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
         assertThat(result.get(0)).isEqualTo(high);
-        assertThat(result.get(1)).isEqualTo(low);
     }
 
     @Test
-    @DisplayName("Should throw InvalidPriceListException when list is null or empty")
+    @DisplayName("Should return empty list when list is null or empty")
     void shouldThrowWhenPriceListIsNullOrEmpty() {
-        assertThatThrownBy(() -> service.sortApplicablePricesByPriority(null))
-                .isInstanceOf(InvalidPriceListException.class)
-                .hasMessageContaining("Price list must not be null");
+    	List<Price> result =  service.sortApplicablePricesByPriority(null);
+        assertThat(result).hasSize(0);
 
-        assertThatThrownBy(() -> service.sortApplicablePricesByPriority(Collections.emptyList()))
-                .isInstanceOf(InvalidPriceListException.class)
-                .hasMessageContaining("Price list must not be null");
+        result = service.sortApplicablePricesByPriority(Collections.emptyList());
+        assertThat(result).hasSize(0);
     }
 }

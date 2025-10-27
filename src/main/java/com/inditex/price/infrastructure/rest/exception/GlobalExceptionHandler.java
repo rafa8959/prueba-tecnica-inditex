@@ -31,14 +31,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     
-    
-    @ExceptionHandler({PriceNotFoundException.class, 
-    	InvalidPriceListException.class})
-    public ResponseEntity<ErrorResponse> handlePriceNotFound(RuntimeException ex) {
-    	log.warn("Price not found: {}", ex.getMessage());
-        ErrorResponse error = new ErrorResponse("No price found for given parameters");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
