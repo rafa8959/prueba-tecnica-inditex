@@ -22,6 +22,7 @@ Feature: Get Applicable Prices API
     Then status 200
     And match response[0].price == 25.45
     And match response[0].priceList == 2
+    And assert response.length == 1
  
   Scenario: Price at 21:00 on 14th June 2020
     Given param applicationDate = '2020-06-14T21:00:00Z'
@@ -55,8 +56,8 @@ Feature: Get Applicable Prices API
     And param productId = productId
     And param brandId = brandId
     When method get
-    Then status 404
-    And match response.message == "No price found for given parameters"
+    Then status 200
+    And assert response.length == 0
     
  
   Scenario: Invalid request parameters (wrong date format)

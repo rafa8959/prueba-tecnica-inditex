@@ -20,26 +20,12 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("Should return 404 and correct message when PriceNotFoundException is thrown")
-    void handlePriceNotFound() {
-        PriceNotFoundException ex = new PriceNotFoundException(1L, 35455L, "2020-06-14T10:00:00");
-
-        ResponseEntity<ErrorResponse> response = handler.handlePriceNotFound(ex);
-
-        assertThat(response.getStatusCode().value()).isEqualTo(404);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getMessage())
-                .isEqualTo("No price found for given parameters");
-    }
-
-    @Test
     @DisplayName("Should return 400 and generic message for invalid input or domain exceptions")
     void handleBadRequestDomainExceptions() {
         // Test all domain-related bad request exceptions
         Exception[] exceptions = new Exception[]{
                 new InvalidDateRangeException("bad date"),
                 new InvalidMoneyAmountException("bad money"),
-                new InvalidPriceListException("bad list"),
                 new DomainValidationException("invalid domain"),
                 new MethodArgumentTypeMismatchException(null, null, "param", null, null)
         };
