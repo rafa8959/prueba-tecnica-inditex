@@ -24,6 +24,13 @@ public class GetApplicablePricesUseCase {
 
     public List<Price> getApplicablePricesSortedByPriority(Long brandId, Long productId, LocalDateTime applicationDate) {
     	List<Price> applicablePrices = priceRepository.findApplicablePrices(brandId, productId, applicationDate);
-        return priceDomainService.sortApplicablePricesByPriority(applicablePrices);
+    	
+        boolean hasAllFilters = brandId != null && productId != null && applicationDate != null;
+
+        if (!hasAllFilters) {
+            return applicablePrices;
+        }
+        
+        return priceDomainService.filterHighestPriorityPrices(applicablePrices);
     }
 }
