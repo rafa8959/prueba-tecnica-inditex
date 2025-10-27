@@ -17,9 +17,6 @@ public class PriceRestMapper {
                 .map(price -> toResponse(price, false))
                 .collect(Collectors.toList());
 
-        if (!responses.isEmpty()) {
-            responses.get(0).setApplied(true);
-        }
 
         return responses;
     }
@@ -34,7 +31,6 @@ public class PriceRestMapper {
         response.setPriority(price.getPriority());
         response.setPrice(price.getMoney().getAmount().doubleValue());
         response.setCurrency(price.getMoney().getCurrency());
-        response.setApplied(applied);
         return response;
     }
 }
