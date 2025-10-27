@@ -5,11 +5,13 @@ import com.inditex.price.domain.model.Price;
 import com.inditex.price.infrastructure.rest.mapper.PriceRestMapper;
 import com.inditex.price.api.PricesApi;
 import com.inditex.price.model.PriceResponse;
+
+import io.swagger.v3.oas.annotations.Parameter;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
@@ -24,16 +26,20 @@ public class PriceController implements PricesApi {
 
     @Override
     public ResponseEntity<List<PriceResponse>> getApplicablePrices(
+    		@Parameter(description = "Application date", required = false)
             OffsetDateTime applicationDate,
+            @Parameter(description = "Product ID", required = false)
             Integer productId,
+            @Parameter(description = "Brand ID", required = false)
             Integer brandId
     ) {
         log.info("Request received - brandId={}, productId={}, applicationDate={}", brandId, productId, applicationDate);
 
-        LocalDateTime localDateTime = applicationDate.toLocalDateTime();
-
         List<Price> domainPrices = getApplicablePricesUseCase
-                .getApplicablePricesSortedByPriority(brandId.longValue(), productId.longValue(), localDateTime);
+                .getApplicablePricesSortedByPriority(
+                		brandId != null ? brandId.longValue() : null, 
+                		productId != null ? productId.longValue() : null, 
+                		applicationDate != null ? applicationDate.toLocalDateTime() : null);
         
         log.debug("Found {} applicable prices for brandId={}, productId={}", domainPrices.size(), brandId, productId);
 

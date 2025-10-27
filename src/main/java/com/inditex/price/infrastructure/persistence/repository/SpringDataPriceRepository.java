@@ -13,11 +13,13 @@ import java.util.List;
 public interface SpringDataPriceRepository extends JpaRepository<PriceEntity, PriceId> {
 
     
-	@Query("SELECT p FROM PriceEntity p " +
-		       "WHERE p.id.productId = :productId " +
-		       "AND p.id.brandId = :brandId " +
-		       "AND p.startDate <= :applicationDate " +
-		       "AND p.endDate >= :applicationDate")
+    @Query("""
+            SELECT p FROM PriceEntity p
+            WHERE (:brandId IS NULL OR p.id.brandId = :brandId)
+              AND (:productId IS NULL OR p.id.productId = :productId)
+              AND (:applicationDate IS NULL OR 
+                  (p.startDate <= :applicationDate AND p.endDate >= :applicationDate))
+        """)
 	List<PriceEntity> findApplicablePrices(Long productId,
 		                                       Long brandId,
 		                                       LocalDateTime applicationDate);
