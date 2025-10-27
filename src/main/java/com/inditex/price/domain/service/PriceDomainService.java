@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class PriceDomainService {
 
 
-    public List<Price> sortApplicablePricesByPriority(List<Price> applicablePrices) {
+    public List<Price> filterHighestPriorityPrices(List<Price> applicablePrices) {
 
         if (applicablePrices == null || applicablePrices.isEmpty()) {
             return new ArrayList<>();
@@ -37,6 +37,6 @@ public class PriceDomainService {
                 .sorted(Comparator.comparing(Price::getBrandId)
                         .thenComparing(Price::getProductId))
                 .toList();
-        
     }
+    
 }

@@ -38,7 +38,7 @@ class PriceDomainServiceTest {
         Price low = createPrice(1, 0, 35.50);
         Price high = createPrice(2, 1, 25.45);
 
-        List<Price> result = service.sortApplicablePricesByPriority(Arrays.asList(low, high));
+        List<Price> result = service.filterHighestPriorityPrices(Arrays.asList(low, high));
 
         assertThat(result).hasSize(1);
         assertThat(result.get(0)).isEqualTo(high);
@@ -47,10 +47,10 @@ class PriceDomainServiceTest {
     @Test
     @DisplayName("Should return empty list when list is null or empty")
     void shouldThrowWhenPriceListIsNullOrEmpty() {
-    	List<Price> result =  service.sortApplicablePricesByPriority(null);
+    	List<Price> result =  service.filterHighestPriorityPrices(null);
         assertThat(result).hasSize(0);
 
-        result = service.sortApplicablePricesByPriority(Collections.emptyList());
+        result = service.filterHighestPriorityPrices(Collections.emptyList());
         assertThat(result).hasSize(0);
     }
 }
