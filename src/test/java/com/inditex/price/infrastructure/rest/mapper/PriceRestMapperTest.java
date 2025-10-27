@@ -42,24 +42,8 @@ class PriceRestMapperTest {
         assertThat(response.getPriority()).isEqualTo(1);
         assertThat(response.getCurrency()).isEqualTo("EUR");
         assertThat(response.getPrice()).isEqualTo(25.45);
-        assertThat(response.getApplied()).isTrue();
         assertThat(response.getStartDate()).isNotNull();
         assertThat(response.getEndDate()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("Should map list of prices and mark first as applied")
-    void shouldMapListAndMarkFirstAsApplied() {
-        List<Price> prices = List.of(
-                createPrice(1, 0, 35.50),
-                createPrice(2, 1, 25.45)
-        );
-
-        List<PriceResponse> responses = PriceRestMapper.toResponseList(prices);
-
-        assertThat(responses).hasSize(2);
-        assertThat(responses.get(0).getApplied()).isTrue();
-        assertThat(responses.get(1).getApplied()).isFalse();
     }
 
     @Test

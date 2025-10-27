@@ -20,29 +20,29 @@ paths:
       summary: Gets applicable prices for a given brand and product at a specific date.
       operationId: getApplicablePrices
       description: |
-        Returns all applicable price rates for a given product and brand at a specific date/time.
-        The list is sorted in descending order of priority, and the first element indicates
-        the price that should be applied.
+        Returns a list of prices filtered by the provided parameters.
+        All parameters are optional — if none are provided, the full price list is returned.
+        The list is sorted in descending order of priority.
       parameters:
         - name: applicationDate
           in: query
-          required: true
-          description: Application date (ISO-8601 format)
+          required: false
+          description: Optional Application date in ISO 8601 format. If not provided, all pricess will be returned.
           schema:
             type: string
             format: date-time
             example: 2020-06-14T16:00:00
         - name: productId
           in: query
-          required: true
-          description: Product identifier
+          required: false
+          description: Optional Product identifier. If not provided, results are not filtered by product.
           schema:
             type: integer
             example: 35455
         - name: brandId
           in: query
-          required: true
-          description: Brand identifier (e.g. 1 = ZARA)
+          required: false
+          description: Optional Brand identifier. If not provided, results are not filtered by brand.
           schema:
             type: integer
             example: 1
@@ -57,7 +57,7 @@ paths:
                   $ref: '#/components/schemas/PriceResponse'
               examples:
                 multipleResults:
-                  summary: Multiple applicable prices found (the one with higher priority applies)
+                  summary: Multiple applicable prices found
                   value:
                     - productId: 35455
                       brandId: 1
@@ -67,7 +67,6 @@ paths:
                       priority: 1
                       price: 25.45
                       currency: EUR
-                      applied: true
                     - productId: 35455
                       brandId: 1
                       priceList: 1
@@ -76,7 +75,6 @@ paths:
                       priority: 0
                       price: 35.50
                       currency: EUR
-                      applied: false
         '400':
           description: Invalid query parameters
           content:
@@ -107,7 +105,6 @@ components:
         - priority
         - price
         - currency
-        - applied
       properties:
         productId:
           type: integer
@@ -137,10 +134,6 @@ components:
         currency:
           type: string
           example: EUR
-        applied:
-          type: boolean
-          description: true if this rate is the one that applies (highest priority)
-          example: true
 
     ErrorResponse:
       type: object
